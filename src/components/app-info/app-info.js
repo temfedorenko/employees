@@ -1,11 +1,11 @@
-import "./app-info.css";
+import './app-info.css';
 
-const AppInfo = (props) => {
+const AppInfo = ({ employeesAmount, increasedEmployees }) => {
   return (
     <div className="app-info">
       <h1>Облік співробітників компанії StopFailing</h1>
-      <h2>Загальна кількість співробітників: {props.employeesAmount}</h2>
-      <h2>Бонус отримають: </h2>
+      <h2>Загальна кількість співробітників: &nbsp; {employeesAmount}</h2>
+      <h2>Бонус отримають: &nbsp; {increasedEmployees}</h2>
     </div>
   );
 };

@@ -1,12 +1,12 @@
-import { Component } from "react";
+import { Component } from 'react';
 
-import AppInfo from "../app-info/app-info";
-import SearchPanel from "../search-panel/search-panel";
-import AppFilter from "../app-filter/app-filter";
-import EmployeesList from "../employees-list/employees-list";
-import EmployeesAddForm from "../employees-add-form/employees-add-form";
+import AppInfo from '../app-info/app-info';
+import SearchPanel from '../search-panel/search-panel';
+import AppFilter from '../app-filter/app-filter';
+import EmployeesList from '../employees-list/employees-list';
+import EmployeesAddForm from '../employees-add-form/employees-add-form';
 
-import "./app.css";
+import './app.css';
 
 class App extends Component {
   constructor(props) {
@@ -14,21 +14,21 @@ class App extends Component {
     this.state = {
       data: [
         {
-          name: "Євгенія Ч.",
+          name: 'Євгенія Ч.',
           salary: 1230,
           increase: false,
           rise: true,
           id: 1,
         },
-        { name: "Артем Ф.", salary: 1800, increase: true, rise: false, id: 2 },
+        { name: 'Артем Ф.', salary: 1800, increase: true, rise: false, id: 2 },
         {
-          name: "Вікторія М.",
+          name: 'Вікторія М.',
           salary: 850,
           increase: false,
           rise: false,
           id: 3,
         },
-        { name: "Юлія Р.", salary: 990, increase: false, rise: false, id: 4 },
+        { name: 'Юлія Р.', salary: 990, increase: false, rise: false, id: 4 },
       ],
     };
     this.maxId = 4;
@@ -58,8 +58,18 @@ class App extends Component {
     }));
   };
 
-  onToggleIncrease = (id) => {
+  onToggleProp = (id, param) => {
     // THE FIRST VARIANT
+    this.setState(({ data }) => ({
+      data: data.map((item) => {
+        if (item.id === id) {
+          return { ...item, [param]: !item[param] };
+        }
+        return item;
+      }),
+    }));
+
+    // THE SECOND VARIANT
     // this.setState(({ data }) => {
     //   const index = data.findIndex((elem) => elem.id === id);
 
@@ -70,43 +80,27 @@ class App extends Component {
     //     newItem,
     //     ...data.slice(index + 1),
     //   ];
-
     //   return {
     //     data: newArr,
     //   };
     // });
-
-    // THE SECOND VARIANT
-    this.setState(({ data }) => ({
-      data: data.map((item) => {
-        if (item.id === id) {
-          return { ...item, increase: !item.increase };
-        }
-        return item;
-      }),
-    }));
-  };
-
-  onToggleRise = (id) => {
-    console.log(`rise this ${id}`);
   };
 
   render() {
+    const { data } = this.state;
+    const employeesAmount = data.length;
+    const increasedEmployees = data.filter((item) => item.increase).length;
+
     return (
       <div className="app">
-        <AppInfo employeesAmount={this.state.data.length} />
+        <AppInfo employeesAmount={employeesAmount} increasedEmployees={increasedEmployees} />
 
         <div className="search-panel">
           <SearchPanel />
           <AppFilter />
         </div>
 
-        <EmployeesList
-          data={this.state.data}
-          onDelete={this.deleteItem}
-          onToggleIncrease={this.onToggleIncrease}
-          onToggleRise={this.onToggleRise}
-        />
+        <EmployeesList data={data} onDelete={this.deleteItem} onToggleProp={this.onToggleProp} />
         <EmployeesAddForm onAdd={this.addItem} />
       </div>
     );
